@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorthwindOrdersAPI", "NorthwindOrdersAPI.csproj", "{48B5C2BA-B51C-494E-9851-D462E5A1F043}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48B5C2BA-B51C-494E-9851-D462E5A1F043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48B5C2BA-B51C-494E-9851-D462E5A1F043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48B5C2BA-B51C-494E-9851-D462E5A1F043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48B5C2BA-B51C-494E-9851-D462E5A1F043}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40B2A61B-1332-4D27-92D5-6AE12C2AA6D8}
+	EndGlobalSection
+EndGlobal
