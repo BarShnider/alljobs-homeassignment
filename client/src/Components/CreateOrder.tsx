@@ -73,7 +73,7 @@ function CreateOrder({ editMode }: { editMode: boolean }) {
     useState<OrderDetailType[]>(savedOrderDetails);
 
   const [selectedProductID, setSelectedProductID] = useState<number | null>(
-    null
+    Number(dropdownData?.products[0].productID) || null 
   );
 
   // Persist form data to localStorage whenever formData changes (only for new orders)
@@ -374,6 +374,7 @@ function CreateOrder({ editMode }: { editMode: boolean }) {
             <span>Product:</span>
             <select
               id="product"
+              value=""
               onChange={(e) => setSelectedProductID(Number(e.target.value))}
             >
               <option disabled value="">
