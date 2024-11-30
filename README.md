@@ -16,6 +16,7 @@
    ```
 2. Build and run the .NET Core project:
    ```sh
+   cd server/NorthwindOrdersAPI
    dotnet build
    dotnet run
    ```
