@@ -8,6 +8,18 @@
 - .NET Core 6 
 - Attached MSSQL Docker Image
 
+### Backend Setup
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/BarShnider/alljobs-homeassignment
+   cd alljobs-homeassignment
+   ```
+2. Build and run the .NET Core project:
+   ```sh
+   dotnet build
+   dotnet run
+   ```
+
 ### Database Setup
 
 1. Download the .tar file for the MSSQL Docker image from the following link: [https://drive.google.com/file/d/1gw11RKwdzwer22h-LH0IjoYJ1rvDoUbn/view?usp=sharing](https://drive.google.com/file/d/1gw11RKwdzwer22h-LH0IjoYJ1rvDoUbn/view?usp=sharing)
@@ -19,18 +31,6 @@
 3. Run the Docker container:
    ```sh
    docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Bar12345!" -p 1433:1433 --name northwind-mssql -d northwind-mssql-image
-   ```
-
-### Backend Setup
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/BarShnider/alljobs-homeassignment
-   cd alljobs-homeassignment
-   ```
-2. Build and run the .NET Core project:
-   ```sh
-   dotnet build
-   dotnet run
    ```
 
 ### Frontend Setup
@@ -52,6 +52,11 @@
 
 ## Assumptions, Notes, and Design Decisions
 - MSSQL is hosted in a Docker container, which assumes that Docker is installed and running on the local machine.
+- It is assumed there is access to the SQL database using SQL Server Management Studio (SSMS), with the following login details:
+  - **Username**: `sa`
+  - **Password**: `Bar12345!`
+  - If access through SSMS is not available, there is a `Stored Procedures` folder in the repository that contains the necessary SQL scripts.
+
 - Basic input validation was handled on both the client-side and server-side.
 - Pagination was implemented on the frontend
 - The log file is stored as a text file on the server. I considered providing access via the API, but if the server goes down, the log file would be inaccessible, so I decided to keep it as a text file organized by date.
