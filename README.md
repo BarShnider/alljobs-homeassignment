@@ -48,7 +48,7 @@
 1. Make sure the database container is running (`docker ps` should list the `northwind-mssql` container).
 2. Start the backend server using the .NET Core command mentioned above.
 3. Navigate to the `client` directory and start the React application.
-4. Open the browser at `http://localhost:3000/orders` to see the Orders page.
+4. Open the browser at the path mentioned after `npm run dev` to see the Orders page. `https://localhost:{port}/orders`
 
 ## Assumptions, Notes, and Design Decisions
 - MSSQL is hosted in a Docker container, which assumes that Docker is installed and running on the local machine.
