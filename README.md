@@ -83,4 +83,5 @@
 **ChatGPT4**
   - **Code Review and Suggestions**: AI tools were leveraged to provide suggestions for optimizing code, including improving readability, applying best practices, and enhancing responsiveness in CSS. The insights gathered were used to refine the quality of the code.
    - The structure for error handling on the backend API, including logging mechanisms was influenced by suggestions provided by AI tools, which helped ensure robustness in error scenarios.
+   
 AI assistance was used as a supportive tool, and all generated code was carefully reviewed, modified, and understood to ensure that it aligns with the project requirements and follows best practices.
