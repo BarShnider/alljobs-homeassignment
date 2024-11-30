@@ -8,18 +8,6 @@
 - .NET Core 6 
 - Attached MSSQL Docker Image
 
-### Backend Setup
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/BarShnider/alljobs-homeassignment
-   cd alljobs-homeassignment
-   ```
-2. Build and run the .NET Core project:
-   ```sh
-   dotnet build
-   dotnet run
-   ```
-
 ### Database Setup
 
 1. Download the .tar file for the MSSQL Docker image from the following link: [https://drive.google.com/file/d/1gw11RKwdzwer22h-LH0IjoYJ1rvDoUbn/view?usp=sharing](https://drive.google.com/file/d/1gw11RKwdzwer22h-LH0IjoYJ1rvDoUbn/view?usp=sharing)
@@ -31,6 +19,18 @@
 3. Run the Docker container:
    ```sh
    docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Bar12345!" -p 1433:1433 --name northwind-mssql -d northwind-mssql-image
+   ```
+
+### Backend Setup
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/BarShnider/alljobs-homeassignment
+   cd alljobs-homeassignment
+   ```
+2. Build and run the .NET Core project:
+   ```sh
+   dotnet build
+   dotnet run
    ```
 
 ### Frontend Setup
