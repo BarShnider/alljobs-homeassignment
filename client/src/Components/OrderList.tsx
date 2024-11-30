@@ -25,20 +25,29 @@ export default function OrderList() {
   const [error, setError] = useState<string | null>(null);
   const ordersPerPage = 5;
 
+  // Exports the current list of orders to a CSV file.
+  // Creates a CSV file with headers and order details, then triggers a download.
   const handleExportToCSV = () => {
     const csvRows = [
-      ["Order ID", "Employee", "Customer", "Shipper", "Order Date", "Order Total Price"],
-      ...orders.map(order => [
+      [
+        "Order ID",
+        "Employee",
+        "Customer",
+        "Shipper",
+        "Order Date",
+        "Order Total Price",
+      ],
+      ...orders.map((order) => [
         order.orderId,
         order.employeeName,
         order.customerName,
         order.shipperName,
         new Date(order.orderDate).toLocaleDateString(),
-        order.orderTotalPrice
-      ])
+        order.orderTotalPrice,
+      ]),
     ];
 
-    const csvContent = csvRows.map(row => row.join(",")).join("\n");
+    const csvContent = csvRows.map((row) => row.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -48,7 +57,9 @@ export default function OrderList() {
     URL.revokeObjectURL(url);
   };
 
-  // Sorting orders by date
+  // Sorts orders based on the `orderDate` field.
+  // Applies ascending or descending sort order depending on the current `sortOrder` state.
+  // Sorting is performed by comparing the timestamps of the order dates.
   const sortedOrders = [...orders].sort((a, b) => {
     if (!sortOrder) return 0;
     const dateA = new Date(a.orderDate).getTime();
@@ -56,23 +67,30 @@ export default function OrderList() {
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
   });
 
-  // Pagination logic
+  // Implements pagination by slicing the sorted orders array.
+  // Calculates the orders to display on the current page based on `currentPage` and `ordersPerPage`.
   const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
   const paginatedOrders = sortedOrders.slice(
     (currentPage - 1) * ordersPerPage,
     currentPage * ordersPerPage
   );
 
+  // Handles the delete operation for a specific order.
+  // Opens a confirmation dialog to confirm the deletion of the order with the given ID.
   const handleDelete = (orderId: number) => {
     setOrderToDelete(orderId);
     handleOpenDialog();
   };
 
+  // Confirms the deletion of an order after user confirmation.
+  // Calls the `deleteOrder` function from the context and updates the state to remove the deleted order.
   const handleConfirmDelete = async () => {
     if (orderToDelete !== null) {
       try {
         await deleteOrder(orderToDelete);
-        setOrders((prevOrders) => prevOrders.filter((order) => order.orderId !== orderToDelete));
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order.orderId !== orderToDelete)
+        );
       } catch (error) {
         setError("Failed to delete the order.");
       } finally {
@@ -82,6 +100,8 @@ export default function OrderList() {
     }
   };
 
+  // Cancels the delete operation and closes the confirmation dialog.
+  // Resets the `orderToDelete` state to null.
   const handleCancelDelete = () => {
     setOrderToDelete(null);
     handleCloseDialog();
@@ -106,7 +126,7 @@ export default function OrderList() {
 
   return (
     <ContainerWindow wrapperClassName={"wide-orders-wrapper"}>
-      <Autocomplete orders={orders} isMobile={false} onSelect={() => {console.log("selected")}} />
+      <Autocomplete orders={orders} isMobile={false} />
       <div className="table-container">
         <div className="table-header">
           <div className="table-cell">Order ID</div>
@@ -129,24 +149,49 @@ export default function OrderList() {
             Sort by Date{" "}
             {sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : ""}
           </button>
-          <Autocomplete orders={orders} isMobile={true} onSelect={() => {console.log("selected")}} />
+          <Autocomplete orders={orders} isMobile={true} />
         </div>
         <div className="table-body">
           {paginatedOrders.map((order) => (
-            <TableRow key={order.orderId} order={order} onDelete={handleDelete} />
+            <TableRow
+              key={order.orderId}
+              order={order}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
         <div className="pagination">
           <div className="pagination-buttons pagination-desktop">
-            <span>Page {currentPage} of {totalPages}</span>
-            <button className="active add-new-btn-mobile" onClick={() => navigate("new")} >Add New Order</button>
-            <button onClick={handleExportToCSV} className="export-csv-button">Export to CSV</button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className="active add-new-btn-mobile"
+              onClick={() => navigate("new")}
+            >
+              Add New Order
+            </button>
+            <button onClick={handleExportToCSV} className="export-csv-button">
+              Export to CSV
+            </button>
           </div>
           <div className="pagination-buttons pagination-mobile">
-            <span>Page {currentPage} of {totalPages}</span>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
             <div>
-              <button className="active add-new-btn-mobile" onClick={() => navigate("new")} >Add</button>
-              <button onClick={handleExportToCSV} className="export-csv-button responsive-export-button">Export</button>
+              <button
+                className="active add-new-btn-mobile"
+                onClick={() => navigate("new")}
+              >
+                Add
+              </button>
+              <button
+                onClick={handleExportToCSV}
+                className="export-csv-button responsive-export-button"
+              >
+                Export
+              </button>
             </div>
           </div>
           <div className="pagination-buttons">

@@ -1,6 +1,6 @@
 // OrderInfo.tsx
-import React from 'react';
-import { Order } from '../types';
+import React from "react";
+import { Order } from "../types";
 
 interface OrderInfoProps {
   orderInfo: Order;
@@ -25,7 +25,8 @@ export default function OrderInfo({ orderInfo }: OrderInfoProps) {
           <span className="bold-label">Name:</span> {orderInfo.customerName}
         </span>
         <span>
-          <span className="bold-label">Contact Name:</span> {orderInfo.contactName}
+          <span className="bold-label">Contact Name:</span>{" "}
+          {orderInfo.contactName}
         </span>
       </div>
     </div>

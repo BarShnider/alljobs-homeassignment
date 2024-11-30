@@ -8,17 +8,13 @@ using System.Text;
 using NorthwindOrdersAPI.Models;
 using System.Globalization;
 
-/// <summary>
-/// DBServices is a class created by me to provides some DataBase Services
-/// </summary>
+
 public class DBservices
 {
 
     public DBservices()
     {
-        //
-        // TODO: Add constructor logic here
-        //
+
     }
 
     //--------------------------------------------------------------------------------------------------
@@ -63,6 +59,9 @@ public class DBservices
         return cmd;
     }
 
+    //---------------------------------------------------------------------------------
+    // Get a list of all the ordes, with the total price of each order
+    //---------------------------------------------------------------------------------
     public List<Order> GetOrdersListWithTotalPrice()
     {
 
@@ -75,7 +74,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // write to log
+             
             throw (ex);
         }
 
@@ -117,7 +116,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // write to log
+             
             throw (ex);
         }
 
@@ -132,6 +131,9 @@ public class DBservices
 
     }
 
+    //---------------------------------------------------------------------------------
+    // gets the information of an order, including the order details by id
+    //---------------------------------------------------------------------------------
     public List<OrderDetail> GetOrderDetailsByOrderId(int orderId)
     {
         SqlConnection con;
@@ -143,7 +145,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // Write to log
+             
             throw ex;
         }
 
@@ -177,7 +179,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // Write to log
+             
             throw ex;
         }
         finally
@@ -190,6 +192,9 @@ public class DBservices
         }
     }
 
+    //---------------------------------------------------------------------------------
+    // Inserst and order with its products (Order Details).
+    //---------------------------------------------------------------------------------
     public void InsertOrderWithDetails(Order order)
     {
         SqlConnection con;
@@ -242,6 +247,9 @@ public class DBservices
         }
     }
 
+    //---------------------------------------------------------------------------------
+    // Deletes an order by id, deletes also the order details on the order details table.
+    //---------------------------------------------------------------------------------
     public int DeleteOrderByID(int OrderID)
     {
 
@@ -254,7 +262,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // write to log
+             
             throw (ex);
         }
 
@@ -266,12 +274,11 @@ public class DBservices
         try
         {
             int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // returning the id/
             return numEffected;
         }
         catch (Exception ex)
         {
-            // write to log
+             
             throw (ex);
         }
 
@@ -287,82 +294,9 @@ public class DBservices
 
 
 
-    public void EditOrderDetail(OrderDetail orderDetail)
-    {
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // Create the connection
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-        try
-        {
-            Dictionary<string, object> paramDic = new Dictionary<string, object>
-        {
-            { "@OrderDetailID", orderDetail.OrderDetailID },
-            { "@ProductID", orderDetail.ProductID }, 
-            { "@Quantity", orderDetail.Quantity }
-        };
-
-            cmd = CreateCommandWithStoredProcedure("SP_EditOrderDetail", con, paramDic);
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-        }
-    }
-
-    public void DeleteOrderDetail(int orderDetailId)
-    {
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("myProjDB"); // Create the connection
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-        try
-        {
-            Dictionary<string, object> paramDic = new Dictionary<string, object>
-        {
-            { "@OrderDetailID", orderDetailId }
-        };
-
-            cmd = CreateCommandWithStoredProcedure("SP_DeleteOrderDetail", con, paramDic);
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-        }
-    }
-
+    //---------------------------------------------------------------------------------
+    // Gets the data for the dropdowns in the form for updating/creating order.
+    //---------------------------------------------------------------------------------
     public DropdownData GetDropdownData()
     {
         SqlConnection con;
@@ -461,6 +395,9 @@ public class DBservices
         }
     }
 
+    //---------------------------------------------------------------------------------
+    // Get order info (information and products list) with the total price of the order.
+    //---------------------------------------------------------------------------------
     public Order GetOrderDetailsWithTotalPrice(int orderID)
     {
         SqlConnection con;
@@ -472,7 +409,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // Write to log
+             
             throw (ex);
         }
 
@@ -529,7 +466,7 @@ public class DBservices
         }
         catch (Exception ex)
         {
-            // Write to log
+             
             throw (ex);
         }
         finally
@@ -542,7 +479,9 @@ public class DBservices
         }
     }
 
-
+    //---------------------------------------------------------------------------------
+    // Edit an order (information and products list)
+    //---------------------------------------------------------------------------------
     public void EditOrder(Order order)
     {
         SqlConnection con;

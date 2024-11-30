@@ -1,6 +1,6 @@
 // ProductForm.tsx
-import React from 'react';
-import { Product } from '../types';
+import React from "react";
+import { Product } from "../types";
 
 interface ProductFormProps {
   products: Product[];
@@ -9,7 +9,12 @@ interface ProductFormProps {
   handleAddProduct: () => void;
 }
 
-export default function ProductForm({ products, selectedProductID, setSelectedProductID, handleAddProduct }: ProductFormProps) {
+export default function ProductForm({
+  products,
+  selectedProductID,
+  setSelectedProductID,
+  handleAddProduct,
+}: ProductFormProps) {
   return (
     <div className="add-product-item">
       <span>Product:</span>

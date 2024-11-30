@@ -1,6 +1,4 @@
-import {OrderDetailType } from '../Types/OrderDetailType'
-
-
+import { OrderDetailType } from "../types";
 
 export default function OrderDetail({ detail }: { detail: OrderDetailType }) {
   return (
@@ -9,5 +7,5 @@ export default function OrderDetail({ detail }: { detail: OrderDetailType }) {
       <span>Qty: {detail.quantity}</span>
       <span>{detail.totalPrice}$</span>
     </div>
-  )
+  );
 }

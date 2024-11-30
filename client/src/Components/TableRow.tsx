@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 
 interface TableRowProps {
@@ -19,7 +19,7 @@ const TableRow: React.FC<TableRowProps> = ({ order, onDelete }) => {
 
   const handleRowClick = (e: React.MouseEvent) => {
     // Prevent the row click if the Delete button is clicked
-    if ((e.target as HTMLElement).tagName !== 'BUTTON') {
+    if ((e.target as HTMLElement).tagName !== "BUTTON") {
       navigate(`details/${order.orderId}`);
     }
   };
@@ -27,7 +27,7 @@ const TableRow: React.FC<TableRowProps> = ({ order, onDelete }) => {
   return (
     <div
       className="table-row"
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: "pointer" }}
       onClick={handleRowClick}
     >
       <div className="table-cell" data-label="Order ID">
@@ -43,7 +43,7 @@ const TableRow: React.FC<TableRowProps> = ({ order, onDelete }) => {
         {order.shipperName}
       </div>
       <div className="table-cell" data-label="Order Date">
-        {order.orderDate.split('T')[0]}
+        {order.orderDate.split("T")[0]}
       </div>
       <div className="table-cell" data-label="Order Total Price">
         {order.orderTotalPrice}$
@@ -51,14 +51,14 @@ const TableRow: React.FC<TableRowProps> = ({ order, onDelete }) => {
       <div className="table-cell" data-label="Actions">
         <div className="actions">
           <Link
-            style={{ textDecoration: 'none', color: 'black' }}
+            style={{ textDecoration: "none", color: "black" }}
             to={`${order.orderId}`}
             onClick={(e) => e.stopPropagation()} // Prevent row click when "Edit" link is clicked
           >
-            <Button color='primary'>Edit</Button>
+            <Button color="primary">Edit</Button>
           </Link>
           <Button
-            color='error'
+            color="error"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation(); // Prevent row click when "Delete" button is clicked

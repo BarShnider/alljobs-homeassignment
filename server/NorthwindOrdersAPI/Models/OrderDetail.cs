@@ -10,24 +10,6 @@
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice => UnitPrice * Quantity;
 
-        public static List<OrderDetail> GetOrderDetailsByOrderId(int orderId)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.GetOrderDetailsByOrderId(orderId);
-        }
-
-        public void EditOrderDetail()
-        {
-            DBservices dbs = new DBservices();
-            dbs.EditOrderDetail(this);
-        }
-
-
-        public static void DeleteOrderDetail(int orderDetailId)
-        {
-            DBservices dbs = new DBservices();
-            dbs.DeleteOrderDetail(orderDetailId);
-        }
 
     }
 }

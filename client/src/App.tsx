@@ -15,7 +15,7 @@ function App() {
     <AppProvider>
     <Toaster/>
     <Routes>
-    <Route index element={<Navigate replace to="orders" />} />
+    <Route index element={<Navigate replace to="orders" />} /> {/* Default Navigation to orders list on index*/}
       <Route path="/orders" element={<OrderList />} />
       <Route path="/orders/new" element={<CreateOrder editMode={false}/>} />
       <Route path="/orders/:id" element={<CreateOrder editMode={true}/>} />
