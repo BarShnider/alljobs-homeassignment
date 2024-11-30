@@ -1,0 +1,683 @@
+
+:root {
+  --primary-color: #fe8b1f;
+  --primary-color-hover:#0056b3 ;
+  --background-color: #e6e8ec;
+  --wrapper-color: #fff;
+  --table-items: #ddd;
+  --table-row-hover:#f1f1f1 ;
+  --text-color: #1f1f1f;
+  --secondery-text-color: #fff;
+  --remove-color: red;
+  --font-size: 16px;
+  --padding: 10px;
+
+}
+[data-theme="dark"]{
+  --primary-color: #2d2b2e; 
+  --primary-color-hover: #283593; 
+  --background-color: #121212; 
+  --wrapper-color: #1e1e1e; 
+  --table-items: #2c2c2c; 
+  --table-row-hover: #333333; 
+  --text-color: #e0e0e0; 
+  --secondery-text-color: #1f1f1f;
+  --remove-color:rgb(112, 1, 1); 
+  --font-size: 16px;
+  --padding: 10px;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  font-family: "Inter", sans-serif;
+  color: var(--text-color);
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  background-color: var(--wrapper-color);
+  /* width: 100%; */
+  height: 90vh;
+  padding: 20px;
+  border-radius: 23px;
+  box-shadow: 4px 4px 14px rgba(31, 31, 31, 0.247);
+  overflow: hidden; /* Prevent any content from overflowing */
+}
+.order-details-wrapper {
+  /* position: relative; */
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%; /* Fill the parent container */
+  overflow: hidden;
+  gap: 10px;
+}
+.order-info-top {
+  flex: 0 0 auto; /* Fixed height for the top section */
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap; /* Wrap items if needed */
+}
+.order-details,
+.customer-details {
+  flex: 1; /* Ensure equal spacing */
+  min-width: 250px; /* Set a minimum width for each column */
+}
+
+.order-details-bottom {
+  /* height: 75%; */
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+  overflow-y: auto; /* Enable vertical scrolling */
+  gap: 10px; /* Add spacing between list items */
+  padding: 10px; /* Padding for better spacing */
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}
+
+.order-number-label {
+  margin: 0px;
+}
+.customer-details {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 4px;
+  color:var(--text-color);
+}
+
+.order-date-label {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.employee-label {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 23px;
+  padding: 3px 10px;
+  font-size: 0.9rem;
+}
+
+.order-details-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align items vertically */
+  padding: 5px;
+  border-bottom: 1px solid var(--table-row-hover);
+  box-sizing: border-box; /* Include padding and border in width calculation */
+}
+
+.order-details-item span {
+  flex: 1; /* All spans take equal space by default */
+  text-align: left;
+  white-space: nowrap; /* Prevent wrapping of text */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+}
+
+.order-details-item span:nth-child(2), /* Quantity */
+.order-details-item span:nth-child(3) {
+  /* Price */
+  text-align: right; /* Align Qty and Price to the right */
+  flex: 0 0 100px; /* Fixed width for Qty and Price */
+}
+
+.order-details-item span:first-child {
+  flex: 1; /* Allow the product name to take up remaining space */
+  text-align: left;
+}
+
+.total-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total-label {
+  right: 20px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background: var(--wrapper-color); /* Ensure visibility if overlapping content */
+  padding: 5px; /* Optional: padding for better visibility */
+}
+.customer-details-label {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .order-info-top {
+    flex-direction: column; /* Stack items vertically */
+    align-items: start; /* Align to the left for a natural look */
+    gap: 5px;
+  }
+
+  .order-details-bottom {
+    max-height: 60vh;
+  }
+
+  .wrapper {
+    border-radius: 23px 23px 0px 0px;
+    height: 93vh;
+    width: 100%;
+  }
+
+  .container {
+    align-items: flex-end;
+  }
+}
+
+.bold-label {
+  font-weight: 700;
+}
+
+/* TABLE*/
+
+/* Base Table Container */
+.table-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border: 1px solid var(--table-items);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--wrapper-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  gap: 10px;
+  justify-content: space-between; /* Ensure headers align properly */
+}
+
+.table-cell {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid var(--table-items);
+  text-align: left;
+}
+
+/* Table Body */
+.table-body {
+  max-height: 75vh; /* Restrict height to allow scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.table-body .table-row {
+  display: flex;
+  flex-wrap: wrap; /* Ensure wrapping for mobile */
+}
+
+.table-body .table-row:hover {
+  background-color: var(--table-row-hover);
+}
+
+.table-row .table-cell {
+  flex: 1; /* Equal space for all cells */
+  padding: 10px 20px;
+  border-bottom: 1px solidvar(--table-items);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between; /* Align pagination items */
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  border-top: 1px solid var(--table-items);
+}
+
+.pagination-buttons button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  background-color: white;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.pagination-buttons button.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Mobile-Specific Styles */
+@media screen and (max-width: 768px) {
+  .table-header {
+    display: none; /* Hide table header on mobile */
+  }
+
+  .table-row {
+    border: 1px solid var(--table-items);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--wrapper-color);
+    flex-direction: column; /* Stack cells vertically */
+  }
+
+  .table-cell {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .table-cell:last-child {
+    border-bottom: none; /* Remove border for the last item */
+  }
+
+  .table-cell:before {
+    content: attr(data-label); /* Add a label for each cell */
+    font-weight: bold;
+    margin-right: 10px;
+    color: var(--text-color);
+  }
+
+  .pagination {
+    flex-direction: column; /* Stack pagination items */
+    align-items: flex-start; /* Align items to the left */
+  }
+
+  .pagination span {
+    margin-bottom: 10px; /* Add spacing for page info */
+  }
+
+  .mobile-autocomplete {
+    visibility: visible;
+    display: flex;
+    width: 70% !important;
+  }
+
+  .desktop-autocomplete {
+    visibility: hidden;
+    display: none;
+  }
+
+
+
+  .mobile-autocomplete > input {
+    padding: 5px !important;
+  }
+
+    .MuiFormControlLabel-root {
+    right: 10px;
+    top: 0px;
+  }
+}
+
+.wrapper {
+  min-width: none;
+  transition: all 350ms ease-in-out;
+  position: relative;
+}
+
+@media (min-width: 769px) {
+  .table-container {
+    height: 75%; /* Make the table-container fill the wrapper */
+    display: flex;
+    flex-direction: column; /* Keep the column layout */
+  }
+
+  .wrapper {
+    min-width: 500px;
+    transition: all 200ms ease-in-out;
+  }
+
+  .table-body {
+    flex-grow: 1; /* Allow the table-body to grow and fill the remaining space */
+    max-height: none; /* Remove the fixed max-height for desktop */
+    overflow-y: auto; /* Allow scrolling if content exceeds available space */
+  }
+
+  .table-row {
+    min-height: calc(
+      100% / 5
+    ); /* Ensure each row takes 1/5th of the table-body height */
+  }
+
+  .table-cell {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .wide-orders-wrapper {
+    width: 85%;
+    height: 70vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .order-details-bottom {
+    height: 75%;
+  }
+
+  .mobile-autocomplete {
+    visibility: hidden;
+    display: none;
+  }
+
+  .desktop-autocomplete {
+    visibility: visible;
+    display: flex;
+  }
+
+  .vertical-line {
+    width: 0.1px;
+    border-radius: 20px;
+    height: 100%;
+    background-color: rgb(217, 216, 216);
+  }
+
+  .wide-form-wrapper {
+    width: 40%;
+  }
+
+  .pagination-desktop {
+    display: none;
+  }
+
+  .pagination-buttons.pagination-desktop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pagination-buttons.pagination-mobile {
+    display: none;
+  }
+
+  .MuiFormControlLabel-root {
+    right: 5px;
+    top: 0px;
+  }
+}
+
+/* Sorting Button for Mobile */
+.mobile-sort {
+  display: none; /* Hidden by default for desktop */
+  margin-bottom: 3px;
+  text-align: center; /* Center the button */
+}
+
+.sort-button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-wrap: nowrap;
+}
+
+.sort-button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+/* Show sorting button only on mobile */
+@media screen and (max-width: 768px) {
+  .mobile-sort {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 5px;
+  }
+
+  .table-header {
+    display: none; /* Keep header hidden on mobile */
+  }
+
+  .pagination-buttons.pagination-desktop {
+    display: none;
+  }
+
+  .pagination-buttons.pagination-mobile {
+    justify-content: space-between;
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+  }
+}
+
+.create-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 90%;
+  height: 100%;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-product-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.plus-sign {
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  background-color: var(--primary-color-hover);
+  cursor: pointer;
+}
+
+.new-order-details-wrapper {
+  overflow-y: auto;
+  max-height: 30vh;
+}
+
+select,
+input,
+label {
+  width: 50%;
+  font-size: 1rem;
+  padding: 2px;
+  background-color: var(--secondery-text-color);
+  border: 1px solid var(--table-items);
+  color: var(--text-color);
+}
+
+input {
+  width: 47%;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.mobile-autocomplete,
+.desktop-autocomplete {
+  position: relative;
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.pagination-desktop > .add-new-btn-mobile {
+  margin-left: 100px;
+}
+
+.form-btns {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Standard Export to CSV Button */
+.export-csv-button {
+  color: var(--wrapper-color); /* White text */
+  border: none; /* Remove border */
+  padding: 10px 20px; /* Padding */
+  cursor: pointer; /* Pointer cursor */
+  border-radius: 5px; /* Rounded corners */
+  margin: 10px; /* Space around button */
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+/* Responsive Export Button for Mobile View */
+.responsive-export-button {
+  width: 100%; /* Full width on smaller devices */
+  padding: 15px 0; /* Larger padding for better touch experience */
+  margin-top: 10px; /* Margin to create spacing */
+}
+
+@media (max-width: 768px) {
+  .responsive-export-button {
+    width: auto; /* Adjust width for tablets and larger phones */
+  }
+}
+
+.autocomplete-list-item {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--wrapper-color);
+  border: 1px solid var(--table-items);
+  border-radius: 5px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-input-field {
+  background-color: var(--background-color);
+  padding: 10px;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 5px;
+  border: 1px solid var(--table-items);
+  color: var(--text-color);
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    background: var(--primary-color-hover);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    margin: 0 10px;
+    border: 1px solid var(--table-items);
+    border-radius: 4px;
+}
+
+.product-item-total {
+  margin-left: 10px;
+  border: none;
+  background: var(--remove-color);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+
+.autocomplete-link {
+  text-decoration: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.autocomplete-li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: var(--table-items);
+}
+
+.autocomplete-li:hover {
+  background-color: var(--table-row-hover);
+}
+
+.MuiFormControlLabel-root {
+  position: absolute !important;
+  /* top: 18px;
+  right: 30px; */
+  z-index: 1000 !important;
+  width: 15%;
+  border: none;
+  background-color: transparent;
+  text-wrap: nowrap;
+  
+}
+
+.clear-btn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background: var(--remove-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -4,12 +4,12 @@
     {
         public int OrderId { get; set; }
         public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; }
+        public string? EmployeeName { get; set; }
         public int CustomerId { get; set; }
-        public string CustomerName { get; set; }
-        public string ContactName { get; set; }
+        public string? CustomerName { get; set; }
+        public string? ContactName { get; set; }
         public int ShipperId { get; set; }
-        public string ShipperName { get; set; }
+        public string? ShipperName { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? RequiredDate { get; set; }
 
@@ -24,6 +24,12 @@
             return dbs.GetOrdersListWithTotalPrice();
         }
 
+        public static Order GetOrderDetailsWithTotalPrice(int orderID)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetOrderDetailsWithTotalPrice(orderID);
+        }
+
         public static void InsertOrderWithDetails(Order order)
         {
             DBservices dbs = new DBservices();
@@ -36,10 +42,10 @@
             dbs.DeleteOrderByID(orderId);
         }
 
-        public void EditOrder()
+        public static void EditOrder(Order order)
         {
             DBservices dbs = new DBservices();
-            dbs.EditOrder(this);
+            dbs.EditOrder(order);
         }
     }
 }

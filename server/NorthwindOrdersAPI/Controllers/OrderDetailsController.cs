@@ -9,37 +9,28 @@ namespace NorthwindOrdersAPI.Controllers
     [ApiController]
     public class OrderDetailsController : ControllerBase
     {
-        // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ILogger<OrderDetailsController> _logger;
+
+        public OrderDetailsController(ILogger<OrderDetailsController> logger)
         {
-            return new string[] { "value1", "value2" };
+            _logger = logger;
         }
+
 
         [HttpGet]
         [Route("GetOrderDetailsByOrderId/{orderId}")]
-        public List<OrderDetail> GetOrderDetailsByOrderId(int orderId)
+        public IActionResult GetOrderDetailsByOrderId(int orderId)
         {
-            return OrderDetail.GetOrderDetailsByOrderId(orderId);
-        }
-
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ValuesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
+            try
+            {
+                _logger.LogInformation("Fetching order details for OrderID {OrderID}.", orderId);
+                return Ok(OrderDetail.GetOrderDetailsByOrderId(orderId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching order details for OrderID {OrderID}.", orderId);
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
         }
 
         [HttpPut("EditOrderDetail")]
@@ -47,32 +38,31 @@ namespace NorthwindOrdersAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("Editing order detail with ID {OrderDetailID}.", orderDetail.OrderDetailID);
                 orderDetail.EditOrderDetail();
                 return Ok($"Order Detail with ID {orderDetail.OrderDetailID} was successfully updated.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error editing order detail with ID {OrderDetailID}.", orderDetail.OrderDetailID);
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 
-        // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
 
         [HttpDelete("DeleteOrderDetail/{orderDetailId}")]
         public IActionResult DeleteOrderDetail(int orderDetailId)
         {
             try
             {
+                _logger.LogInformation("Deleting order detail with ID {OrderDetailID}.", orderDetailId);
                 OrderDetail.DeleteOrderDetail(orderDetailId);
                 return Ok($"Order Detail with ID {orderDetailId} was successfully deleted.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error deleting order detail with ID {OrderDetailID}.", orderDetailId);
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 

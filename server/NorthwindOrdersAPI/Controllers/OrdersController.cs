@@ -9,32 +9,57 @@ namespace NorthwindOrdersAPI.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        // GET: api/<OrdersController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ILogger<OrdersController> _logger;
+
+        public OrdersController(ILogger<OrdersController> logger)
         {
-            return new string[] { "value1", "value2" };
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("GetOrdersListWithTotalPrice")]
-        public List<Order> GetOrdersListWithTotalPrice()
+        public IActionResult GetOrdersListWithTotalPrice()
         {
-            return Order.GetOrdersListWithTotalPrice();
+            try
+            {
+                _logger.LogInformation("Fetching the list of orders with total prices.");
+                return Ok(Order.GetOrdersListWithTotalPrice());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching orders list with total prices.");
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
         }
 
-        // GET api/<OrdersController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("GetOrderDetailsWithTotalPrice/{orderID}")]
+        public IActionResult GetOrderDetailsWithTotalPrice(int orderID)
         {
-            return "value";
+            try
+            {
+                _logger.LogInformation("Fetching details for order with ID {OrderID}.", orderID);
+
+                // Fetch the order details
+                var orderDetails = Order.GetOrderDetailsWithTotalPrice(orderID);
+
+                // Check if the order exists
+                if (orderDetails == null)
+                {
+                    _logger.LogWarning("Order with ID {OrderID} not found.", orderID);
+                    return NotFound($"Order with ID {orderID} was not found.");
+                }
+
+                // Return the order details
+                return Ok(orderDetails);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching details for order with ID {OrderID}.", orderID);
+                return StatusCode(500, "Internal server error. Please try again later.");
+            }
         }
 
-        // POST api/<OrdersController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
         [HttpPost]
         [Route("InsertOrderWithDetails")]
@@ -42,41 +67,34 @@ namespace NorthwindOrdersAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("Inserting a new order with details: {Order}.", order);
                 Order.InsertOrderWithDetails(order);
                 return Ok("Order and its details inserted successfully!");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error inserting a new order with details: {Order}.", order);
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 
-        // PUT api/<OrdersController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
         [HttpPut("EditOrder")]
         public IActionResult EditOrder([FromBody] Order order)
         {
             try
             {
-                order.EditOrder();
+                _logger.LogInformation("Editing order with ID {OrderID}.", order.OrderId);
+                Order.EditOrder(order);
                 return Ok($"Order with ID {order.OrderId} was successfully updated.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error editing order with ID {OrderID}.", order.OrderId);
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
 
-
-        // DELETE api/<OrdersController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
 
         [HttpDelete]
         [Route("DeleteOrderById/{orderId}")]
@@ -84,12 +102,14 @@ namespace NorthwindOrdersAPI.Controllers
         {
             try
             {
+                _logger.LogInformation("Deleting order with ID {OrderID}.", orderId);
                 Order.DeleteOrderByID(orderId);
                 return Ok("Order and its details removed successfully!");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                _logger.LogError(ex, "Error deleting order with ID {OrderID}.", orderId);
+                return StatusCode(500, "Internal server error. Please try again later.");
             }
         }
     }

@@ -285,47 +285,7 @@ public class DBservices
         }
     }
 
-    public void EditOrder(Order order)
-    {
-        SqlConnection con;
-        SqlCommand cmd;
 
-        try
-        {
-            con = connect("myProjDB"); // Create the connection
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-        try
-        {
-            Dictionary<string, object> paramDic = new Dictionary<string, object>
-        {
-            { "@OrderID", order.OrderId },
-            { "@CustomerID", order.CustomerId },
-            { "@EmployeeID", order.EmployeeId },
-            { "@ShipperID", order.ShipperId },
-            { "@OrderDate", order.OrderDate },
-            { "@RequiredDate", order.RequiredDate }
-        };
-
-            cmd = CreateCommandWithStoredProcedure("SP_EditOrder", con, paramDic);
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-        }
-    }
 
     public void EditOrderDetail(OrderDetail orderDetail)
     {
@@ -402,6 +362,240 @@ public class DBservices
             }
         }
     }
+
+    public DropdownData GetDropdownData()
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // Create the connection
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        DropdownData dropdownData = new DropdownData
+        {
+            Customers = new List<Customer>(),
+            Employees = new List<Employee>(),
+            Shippers = new List<Shipper>(),
+            Products = new List<Product>()
+        };
+
+        try
+        {
+            cmd = CreateCommandWithStoredProcedure("SP_GetDropdownData", con, null); // Create the command
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            // Read Customers
+            while (dataReader.Read())
+            {
+                dropdownData.Customers.Add(new Customer
+                {
+                    CustomerID = Convert.ToInt32(dataReader["CustomerID"]),
+                    CustomerName = dataReader["CustomerName"].ToString()
+                });
+            }
+
+            // Move to next result set
+            if (dataReader.NextResult())
+            {
+                // Read Employees
+                while (dataReader.Read())
+                {
+                    dropdownData.Employees.Add(new Employee
+                    {
+                        EmployeeID = Convert.ToInt32(dataReader["EmployeeID"]),
+                        FirstName = dataReader["FirstName"].ToString(),
+                        LastName = dataReader["LastName"].ToString()
+
+                    });
+                }
+            }
+
+            // Move to next result set
+            if (dataReader.NextResult())
+            {
+                // Read Shippers
+                while (dataReader.Read())
+                {
+                    dropdownData.Shippers.Add(new Shipper
+                    {
+                        ShipperID = Convert.ToInt32(dataReader["ShipperID"]),
+                        ShipperName = dataReader["ShipperName"].ToString()
+                    });
+                }
+            }
+
+            // Move to next result set
+            if (dataReader.NextResult())
+            {
+                // Read Products
+                while (dataReader.Read())
+                {
+                    dropdownData.Products.Add(new Product
+                    {
+                        ProductID = Convert.ToInt32(dataReader["ProductID"]),
+                        ProductName = dataReader["ProductName"].ToString(),
+                        Price = Convert.ToDecimal(dataReader["Price"])
+                    });
+                }
+            }
+
+            return dropdownData;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    public Order GetOrderDetailsWithTotalPrice(int orderID)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB"); // Create the connection
+        }
+        catch (Exception ex)
+        {
+            // Write to log
+            throw (ex);
+        }
+
+        Dictionary<string, object> paramDic = new Dictionary<string, object>();
+        paramDic.Add("@OrderID", orderID);
+        cmd = CreateCommandWithStoredProcedure("SP_GetOrderDetailsWithTotalPrice", con, paramDic); // Create the command
+
+        try
+        {
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            Order o = null;
+
+            // Read the first result set (order information)
+            if (dataReader.Read())
+            {
+                o = new Order
+                {
+                    OrderId = Convert.ToInt32(dataReader["OrderId"]),
+                    EmployeeId = Convert.ToInt32(dataReader["EmployeeId"]),
+                    EmployeeName = dataReader["EmployeeName"].ToString(),
+                    CustomerId = Convert.ToInt32(dataReader["CustomerId"]),
+                    CustomerName = dataReader["CustomerName"].ToString(),
+                    ContactName = dataReader["ContactName"].ToString(),
+                    ShipperId = Convert.ToInt32(dataReader["ShipperId"]),
+                    ShipperName = dataReader["ShipperName"].ToString(),
+                    OrderDate = Convert.ToDateTime(dataReader["OrderDate"]),
+                    RequiredDate = dataReader["RequiredDate"] == DBNull.Value
+                        ? (DateTime?)null
+                        : Convert.ToDateTime(dataReader["RequiredDate"]),
+                    OrderDetails = new List<OrderDetail>()
+                };
+            }
+
+            // Move to the second result set (order details)
+            if (dataReader.NextResult())
+            {
+                while (dataReader.Read())
+                {
+                    // Populate order details (products list)
+                    var detail = new OrderDetail
+                    {
+                        OrderDetailID = Convert.ToInt32(dataReader["OrderDetailID"]),
+                        ProductID = Convert.ToInt32(dataReader["ProductID"]),
+                        ProductName = dataReader["ProductName"].ToString(),
+                        Quantity = Convert.ToInt32(dataReader["Quantity"]),
+                        UnitPrice = Convert.ToDecimal(dataReader["UnitPrice"]),
+                    };
+                    o.OrderDetails.Add(detail);
+                }
+            }
+
+            return o;
+        }
+        catch (Exception ex)
+        {
+            // Write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                // Close the DB connection
+                con.Close();
+            }
+        }
+    }
+
+
+    public void EditOrder(Order order)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("myProjDB");
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        try
+        {
+            // Prepare a DataTable for order details
+            DataTable orderDetailsTable = new DataTable();
+            orderDetailsTable.Columns.Add("ProductID", typeof(int));
+            orderDetailsTable.Columns.Add("Quantity", typeof(int));
+
+            foreach (var detail in order.OrderDetails)
+            {
+                orderDetailsTable.Rows.Add(detail.ProductID, detail.Quantity);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>
+        {
+            { "@OrderID", order.OrderId },
+            { "@CustomerID", order.CustomerId },
+            { "@EmployeeID", order.EmployeeId },
+            { "@ShipperID", order.ShipperId },
+            { "@OrderDate", order.OrderDate },
+            { "@RequiredDate",  order.RequiredDate ?? (object)DBNull.Value },
+            { "@OrderDetails", orderDetailsTable }
+        };
+
+            cmd = CreateCommandWithStoredProcedure("SP_EditOrderWithDetails", con, paramDic);
+            cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
 
 
 }
